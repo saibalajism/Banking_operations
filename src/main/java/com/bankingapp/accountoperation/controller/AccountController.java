@@ -1,8 +1,12 @@
 package com.bankingapp.accountoperation.controller;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -19,9 +23,23 @@ public class AccountController {
 	@Autowired
 	private AccountServiceImpl accountService;
 	
-	@PostMapping
+	
+	// Add account REST API
+	@PostMapping("/create")
 	public ResponseEntity<Account> createAccount(@RequestBody AccountDto dto){
 		return new ResponseEntity<>(accountService.createAccount(dto), HttpStatus.CREATED);
 	}
+	
+	//Get account by ID REST API
+	@GetMapping("/{id}")
+	public ResponseEntity<Object> getAccountById(@PathVariable("id") Long Id){
+		return accountService.getAccountById(Id);
+	}
+	
+	//Get all account list REST API
+		@GetMapping
+		public List<Account> getAccountList(){
+			return accountService.getAccountList();
+		}
 
 }
