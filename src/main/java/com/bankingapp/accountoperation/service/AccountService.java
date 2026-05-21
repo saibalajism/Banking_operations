@@ -17,5 +17,7 @@ public interface AccountService {
 	ResponseEntity<Object> deposit(Long Id, double amount, Long FromAccId);
 	
 	ResponseEntity<Object> withdraw(Long Id, double amount);
+	
+	ResponseEntity<Object> deleteAccountById(Long Id);
 
 }

@@ -116,4 +116,22 @@ public class AccountServiceImpl implements AccountService {
 		}
 	}
 
+	@Override
+	public ResponseEntity<Object> deleteAccountById(Long Id) {
+		Account account = accountRepo.findById(Id).orElse(null);
+		if (account == null) {
+			tools.jackson.databind.node.ObjectNode errorResponse = mapper.createObjectNode();
+			errorResponse.put("message", "Account does not exsist.");
+			errorResponse.put("httpStatusCode", 404);
+			return new ResponseEntity<>(errorResponse, HttpStatus.NOT_FOUND);
+		}else {
+			tools.jackson.databind.node.ObjectNode successResponse = mapper.createObjectNode();
+			accountRepo.deleteById(Id);
+			successResponse.put("message","Account deleted successfully.");
+			successResponse.put("httpStatusCode", 200);
+			return new ResponseEntity<>(successResponse, HttpStatus.OK);
+		}
+		
+	}
+
 }
