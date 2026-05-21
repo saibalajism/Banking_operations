@@ -52,5 +52,12 @@ public class AccountController {
 		    Long FromAccId = Long.parseLong(req.get("DebitAccountId").toString()); 		    
 		    return accountService.deposit(Id, amount, FromAccId); 
 		}
+	  // withdraw
+	  @PutMapping("/withdraw")
+	  public ResponseEntity<Object> withDrawAmount(@RequestBody Map<String, Object> req){
+		  double amount=Double.parseDouble(req.get("amount").toString());
+		  Long Id = Long.parseLong(req.get("Id").toString()); 		
+		  return accountService.withdraw(Id, amount);
+	  }
 
 }

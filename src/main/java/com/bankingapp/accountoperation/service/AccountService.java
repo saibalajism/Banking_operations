@@ -15,5 +15,7 @@ public interface AccountService {
 	List<Account> getAccountList();
 	
 	ResponseEntity<Object> deposit(Long Id, double amount, Long FromAccId);
+	
+	ResponseEntity<Object> withdraw(Long Id, double amount);
 
 }

@@ -87,4 +87,33 @@ public class AccountServiceImpl implements AccountService {
 
 	}
 
+	@Override
+	public ResponseEntity<Object> withdraw(Long Id, double amount) {
+		Account account = accountRepo.findById(Id).orElse(null);
+		if (account == null) {
+			tools.jackson.databind.node.ObjectNode errorResponse = mapper.createObjectNode();
+			errorResponse.put("message", "Account does not exsist.");
+			errorResponse.put("httpStatusCode", 404);
+			return new ResponseEntity<>(errorResponse, HttpStatus.NOT_FOUND);
+		}else {
+			if (account.getBalance() > amount) {
+				tools.jackson.databind.node.ObjectNode successResponse = mapper.createObjectNode();
+				double totalAmount = account.getBalance() - amount;
+				account.setBalance(totalAmount);
+				JsonNode accountWithdraw = mapper.valueToTree(accountRepo.save(account));
+				successResponse.set("withdraw details", accountWithdraw);
+				successResponse.put("Available_balance", totalAmount);
+				successResponse.put("httpStatusCode", 200);
+				return new ResponseEntity<>(successResponse, HttpStatus.OK);
+			}else {
+				tools.jackson.databind.node.ObjectNode errorResponse = mapper.createObjectNode();
+				double totalAmount = account.getBalance();
+				errorResponse.put("message", "Insufficient Balance");
+				errorResponse.put("Available_balance",totalAmount);
+				errorResponse.put("httpStatusCode", 404);
+				return new ResponseEntity<>(errorResponse, HttpStatus.NOT_FOUND);
+			}
+		}
+	}
+
 }
